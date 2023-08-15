@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export default function TextForm(props) {
-  const [btntext, setBtnText] = useState("");
+  const [btntext, setVtnText] = useState("");
   const handleUpClick = () => {
     let newText = text.toUpperCase();
     setText(newText);
@@ -13,8 +13,8 @@ export default function TextForm(props) {
   };
 
   const handleVlClick = () => {
-    let newText = text.match(/[aeiou]/gi).length;
-    setBtnText(`Total number of vowels: ${newText}`);
+    let newText = text.match(/[aeiou]/gi)?.length;
+    setVtnText(`Total number of vowels: ${newText>0?newText:"No Vowels Found"}`);
   };
 
   const HandleExtraSpace = () => {
@@ -83,7 +83,7 @@ export default function TextForm(props) {
         <p>{0.008 * text.split(" ").length} Minutes read</p>
         <p>{btntext}</p>
         <h2>Preview</h2>
-        <p>{text.length>0?text:"Enter something to preview it"}</p>
+        <p>{text.length > 0 ? text : "Enter something to preview it"}</p>
       </div>
     </>
   );
