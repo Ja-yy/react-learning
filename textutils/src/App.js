@@ -1,9 +1,10 @@
 import { useState } from "react";
 import "./App.css";
-// import About from "./components/About";
+import About from "./components/About";
 import Navbar from "./components/Navbar";
 import TextForm from "./components/TextForm";
 import Alert from "./components/Alert";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 function App() {
   const [mode, setMode] = useState("light");
@@ -15,9 +16,9 @@ function App() {
       msg: message,
       type: type,
     });
-    setTimeout(()=>{
+    setTimeout(() => {
       setAlert(null);
-    },1500)
+    }, 1500);
   };
 
   const toggelMode = () => {
@@ -29,17 +30,28 @@ function App() {
       setMode("light");
       document.body.style.backgroundColor = "white";
       showAlert("Light mode has been enabled", "success");
-
     }
   };
   return (
     <>
-      <Navbar title="TextUtils" mode={mode} toggelMode={toggelMode} />
-      <Alert alert={alert} />
-      <div className="container my-3">
-        <TextForm heading="Enter the text to analyze" mode={mode} />
-        {/* <About /> */}
-      </div>
+      <BrowserRouter>
+        <Navbar title="TextUtils" mode={mode} toggelMode={toggelMode} />
+        <Alert alert={alert} />
+        <Routes>
+          <Route
+            exact
+            element={
+              <TextForm
+                showAlert={showAlert}
+                heading="Enter the text to analyze"
+                mode={mode}
+              />
+            }
+            path="/"
+          ></Route>
+          <Route exact element={<About mode={mode} />} path="/about"></Route>
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

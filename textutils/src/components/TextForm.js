@@ -5,28 +5,34 @@ export default function TextForm(props) {
   const handleUpClick = () => {
     let newText = text.toUpperCase();
     setText(newText);
+    props.showAlert("Text converted to upper case", "success");
   };
 
   const handleLoClick = () => {
     let newText = text.toLowerCase();
     setText(newText);
+    props.showAlert("Text converted to lower case", "success");
   };
 
   const handleVlClick = () => {
     let newText = text.match(/[aeiou]/gi)?.length;
-    setVtnText(`Total number of vowels: ${newText>0?newText:"No Vowels Found"}`);
+    setVtnText(
+      `Total number of vowels: ${newText > 0 ? newText : "No Vowels Found"}`
+    );
+    props.showAlert("Vowel counted", "success");
   };
 
   const HandleExtraSpace = () => {
     let newText = text.split(/[ ]+/);
     setText(newText.join(" "));
+    props.showAlert("Extra space removed", "success");
   };
 
   const handleCopy = () => {
-    var text = document.getElementById("myBox");
-    text.select();
-    navigator.clipboard.writeText(text.value);
+    navigator.clipboard.writeText(text);
+    props.showAlert("Copy created", "success");
   };
+
   const handleOnChnaged = (event) => {
     setText(event.target.value);
   };
@@ -49,24 +55,44 @@ export default function TextForm(props) {
             rows="8"
             onChange={handleOnChnaged}
             style={{
-              backgroundColor: props.mode === "dark" ? "grey" : "white",
+              backgroundColor: props.mode === "dark" ? "#13466e" : "white",
               color: props.mode === "dark" ? "white" : "#042743",
             }}
           ></textarea>
         </div>
-        <button className="btn btn-primary mx-2" onClick={handleUpClick}>
+        <button
+          disabled={text.length === 0}
+          className="btn btn-primary mx-2 my-2"
+          onClick={handleUpClick}
+        >
           Convert to Uppercase
         </button>
-        <button className="btn btn-primary mx-2" onClick={handleLoClick}>
+        <button
+          disabled={text.length === 0}
+          className="btn btn-primary mx-2 my-2"
+          onClick={handleLoClick}
+        >
           Convert to Lowercase
         </button>
-        <button className="btn btn-primary mx-2" onClick={handleVlClick}>
+        <button
+          disabled={text.length === 0}
+          className="btn btn-primary mx-2 my-2"
+          onClick={handleVlClick}
+        >
           Count vowels
         </button>
-        <button className="btn btn-primary mx-2" onClick={handleCopy}>
+        <button
+          disabled={text.length === 0}
+          className="btn btn-primary mx-2 my-2"
+          onClick={handleCopy}
+        >
           Create copy
         </button>
-        <button className="btn btn-primary mx-2" onClick={HandleExtraSpace}>
+        <button
+          disabled={text.length === 0}
+          className="btn btn-primary mx-2 my-2"
+          onClick={HandleExtraSpace}
+        >
           Remove extra space
         </button>
       </div>
@@ -78,7 +104,12 @@ export default function TextForm(props) {
       >
         <h2>your text summary</h2>
         <p>
-          {text.split(" ").length} words {text.length} characters
+          {
+            text.split(/\s+/).filter((element) => {
+              return element.length !== 0;
+            }).length
+          }
+          words {text.length} characters
         </p>
         <p>{0.008 * text.split(" ").length} Minutes read</p>
         <p>{btntext}</p>
