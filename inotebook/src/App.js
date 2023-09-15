@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React from "react";
+import Navbar from "./components/Navbar";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { publicRoutesList } from "./RoutesList";
+import NoteProvider from "./context/notes/NoteContext";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+        <Navbar />
+        <NoteProvider>
+          <Routes>
+            {publicRoutesList.map((route) => (
+              <Route
+                exact
+                key={`route-${route.name}`}
+                path={route.url}
+                element={route.element}
+              />
+            ))}
+          </Routes>
+        </NoteProvider>
+      </BrowserRouter>
+    </>
   );
 }
 
